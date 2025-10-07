@@ -11,7 +11,7 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: sanketdesai
+    - host: sanketdesai.devops.com
       http:
         paths:
           - path: /api
