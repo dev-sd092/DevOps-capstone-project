@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Checkout from Git') {
             steps {
-                git credentialsId: 'GITHUB', url: 'https://github.com/dev-sd092/DevOps-capstone-project.git'
+                git branch: 'main', credentialsId: 'GITHUB', url: 'https://github.com/dev-sd092/DevOps-capstone-project.git'
             }
         }
         stage('Sonarqube Analysis') {
