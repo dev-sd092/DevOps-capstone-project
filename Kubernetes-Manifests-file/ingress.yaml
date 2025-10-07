@@ -6,37 +6,15 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
-    # alb.ingress.kubernetes.io/subnets: "subnet-0f074893c8d50b416,subnet-012493a9edc6ec935"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
+    # alb.ingress.kubernetes.io/subnets: "subnet-xxxxx,subnet-yyyyy,subnet-zzzzz"
 spec:
   ingressClassName: alb
   rules:
-    - host: sanketdesai.devops.com
-      http:
+    - http:
         paths:
           - path: /api
             pathType: Prefix
-            backend:
-              service:
-                name: api
-                port:
-                  number: 3500
-          - path: /healthz
-            pathType: Exact
-            backend:
-              service:
-                name: api
-                port:
-                  number: 3500
-          - path: /ready
-            pathType: Exact
-            backend:
-              service:
-                name: api
-                port:
-                  number: 3500
-          - path: /started
-            pathType: Exact
             backend:
               service:
                 name: api
