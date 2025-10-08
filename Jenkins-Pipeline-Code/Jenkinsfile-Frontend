@@ -12,6 +12,14 @@ pipeline {
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/"
     }
     stages {
+		stage('Run only if backend changed') {
+      		when {
+        		changeset "backend/**"
+      		}	
+      		steps {
+        		echo "Backend files changed — running backend pipeline"
+      		}
+   		}
         stage('Cleaning Workspace') {
             steps {
                 cleanWs()
