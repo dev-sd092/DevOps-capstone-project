@@ -11,13 +11,25 @@ pipeline {
         AWS_DEFAULT_REGION = 'ap-south-1'
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/"
     }
-    triggers {
-        githubPush() // still triggered by webhook, but filtered below
-    }
-    options {
-        skipDefaultCheckout(true)
-    }
     stages {
+        stage('Check backend Changes') {
+		    steps {
+		        script {
+		            def changed = currentBuild.changeSets.any { cs ->
+		                cs.items.any { item ->
+		                    item.affectedPaths.any { path ->
+		                        path.startsWith("backend/") || path == "Jenkins-Pipeline-Code/Jenkinsfile-Backend"
+		                    }
+		                }
+		            }
+		            if (!changed) {
+		                echo "No backend changes detected — skipping pipeline."
+		                currentBuild.result = 'SUCCESS'
+		                error("Skipping backend pipeline as no relevant files changed")
+		            }
+		        }
+		    }
+		}
         stage('Run only if backend changed') {
       		when {
         		anyOf {
