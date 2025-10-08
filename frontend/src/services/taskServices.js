@@ -1,5 +1,5 @@
 import axios from "axios";
-const apiUrl = '/api/tasks'
+const apiUrl = `${process.env.REACT_APP_API_URL || '/api'}/tasks`;
 console.log(apiUrl)
 export function getTasks() {
     return axios.get(apiUrl);
@@ -16,5 +16,6 @@ export function updateTask(id, task) {
 export function deleteTask(id) {
     return axios.delete(apiUrl + "/" + id);
 }
+
 
 
