@@ -24,8 +24,8 @@ pipeline {
 		            }
 		            if (!changed) {
 		                echo "No frontend changes detected — skipping pipeline."
-		                currentBuild.result = 'SUCCESS'
-		                error("Skipping frontend pipeline as no relevant files changed")
+		                currentBuild.result = 'SUCCESS'  // mark build as success
+		                return // exit the stage/pipeline gracefully
 		            }
 		        }
 		    }
