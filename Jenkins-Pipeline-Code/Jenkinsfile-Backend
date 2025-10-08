@@ -90,11 +90,11 @@ pipeline {
         }
         stage('Update Deployment file') {
             environment {
-                GIT_REPO_NAME = "DevOps-capstone-project"
+                GIT_REPO_NAME = "k8s-menifests-capstone-project"
                 GIT_USER_NAME = "dev-sd092"
             }
             steps {
-                dir('Kubernetes-Manifests-file/Backend') {
+                dir('Backend') {
                     withCredentials([string(credentialsId: 'github-read-write-token', variable: 'GITHUB_TOKEN')]) {
                         sh '''
                             git config user.email "sanketdesai092@gmail.com"
