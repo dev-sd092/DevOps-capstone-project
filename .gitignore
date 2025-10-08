@@ -47,6 +47,9 @@ Thumbs.db
 # Logs
 *.log
 
+#folders
+/Kubernetes-Manifests-file/
+
 # Lock files (optional)
 # Uncomment this if you don’t want to version the dependency lock file
 # .terraform.lock.hcl
