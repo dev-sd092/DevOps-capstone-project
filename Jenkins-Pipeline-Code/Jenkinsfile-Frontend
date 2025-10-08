@@ -14,7 +14,7 @@ pipeline {
     stages {
 		stage('Run only if backend changed') {
       		when {
-        		changeset "backend/**"
+        		changeset "frontend/**"
       		}	
       		steps {
         		echo "Backend files changed — running backend pipeline"
