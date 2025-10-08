@@ -38,7 +38,7 @@ pipeline {
                 }
       		}	
       		steps {
-        		echo "Backend files changed — running backend pipeline"
+        		echo "frontend files changed — running frontend pipeline"
       		}
    		}
         stage('Cleaning Workspace') {
