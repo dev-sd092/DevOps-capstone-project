@@ -14,7 +14,10 @@ pipeline {
     stages {
 		stage('Run only if backend changed') {
       		when {
-        		changeset "frontend/**"
+        		anyOf {
+                    changeset "frontend/**"
+                    changeset "Jenkins-Pipeline-Code/Jenkinsfile-Frontend"
+                }
       		}	
       		steps {
         		echo "Backend files changed — running backend pipeline"
@@ -26,6 +29,12 @@ pipeline {
             }
         }
         stage('Checkout from Git') {
+			when {
+        		anyOf {
+                    changeset "frontend/**"
+                    changeset "Jenkins-Pipeline-Code/Jenkinsfile-Frontend"
+                }
+      		}	
             steps {
                 git branch: 'main', credentialsId: 'GITHUB', url: 'https://github.com/dev-sd092/DevOps-capstone-project.git'
             }
