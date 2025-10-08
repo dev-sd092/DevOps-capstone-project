@@ -12,7 +12,7 @@ pipeline {
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/"
     }
     stages {
-        stage('Check backend Changes') {
+        stage('Check Backend Changes') {
 		    steps {
 		        script {
 		            def changed = currentBuild.changeSets.any { cs ->
@@ -24,8 +24,8 @@ pipeline {
 		            }
 		            if (!changed) {
 		                echo "No backend changes detected — skipping pipeline."
-		                currentBuild.result = 'SUCCESS'
-		                error("Skipping backend pipeline as no relevant files changed")
+		                currentBuild.result = 'SUCCESS'  // mark build as success
+		                return // exit the stage/pipeline gracefully
 		            }
 		        }
 		    }
