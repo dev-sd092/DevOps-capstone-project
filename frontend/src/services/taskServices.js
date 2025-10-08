@@ -1,5 +1,5 @@
 import axios from "axios";
-const apiUrl = 'http://sanketdesai/api/tasks'
+const apiUrl = '/api/tasks'
 console.log(apiUrl)
 export function getTasks() {
     return axios.get(apiUrl);
@@ -16,4 +16,5 @@ export function updateTask(id, task) {
 export function deleteTask(id) {
     return axios.delete(apiUrl + "/" + id);
 }
+
 
