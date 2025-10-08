@@ -12,7 +12,25 @@ pipeline {
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/"
     }
     stages {
-		stage('Run only if backend changed') {
+		stage('Check Frontend Changes') {
+		    steps {
+		        script {
+		            def changed = currentBuild.changeSets.any { cs ->
+		                cs.items.any { item ->
+		                    item.affectedPaths.any { path ->
+		                        path.startsWith("frontend/") || path == "Jenkins-Pipeline-Code/Jenkinsfile-Frontend"
+		                    }
+		                }
+		            }
+		            if (!changed) {
+		                echo "No frontend changes detected — skipping pipeline."
+		                currentBuild.result = 'SUCCESS'
+		                error("Skipping frontend pipeline as no relevant files changed")
+		            }
+		        }
+		    }
+		}
+		stage('Run only if frontend changed') {
       		when {
         		anyOf {
                     changeset "frontend/**"
