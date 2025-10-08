@@ -94,26 +94,26 @@ pipeline {
                 GIT_USER_NAME = "dev-sd092"
             }
             steps {
-                dir('Backend') {
-                    withCredentials([string(credentialsId: 'github-read-write-token', variable: 'GITHUB_TOKEN')]) {
-                        sh '''
-                            git config user.email "sanketdesai092@gmail.com"
-                            git config user.name "dev-sd092"
-                            BUILD_NUMBER=${BUILD_NUMBER}
-                            echo $BUILD_NUMBER
-                            imageTag=$(grep -oP '(?<=back-end:)[^ ]+' deployment.yaml)
-                            echo $imageTag
-                            sed -i "s/${AWS_ECR_REPO_NAME}:${imageTag}/${AWS_ECR_REPO_NAME}:${BUILD_NUMBER}/" deployment.yaml
-                            git add deployment.yaml
-                            # Only commit if there are staged changes
-                            if git diff --cached --quiet; then
-                                echo "No changes to commit"
-                            else
-                                git commit -m "Update deployment Image to version ${BUILD_NUMBER}"
-                                git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
-                            fi
-                        '''
-                    }
+                withCredentials([string(credentialsId: 'github-read-write-token', variable: 'GITHUB_TOKEN')]) {
+                    sh '''
+                        git clone https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git
+                        cd ${GIT_REPO_NAME}/Backend
+                        git config user.email "sanketdesai092@gmail.com"
+                        git config user.name "dev-sd092"
+                        BUILD_NUMBER=${BUILD_NUMBER}
+                        echo $BUILD_NUMBER
+                        imageTag=$(grep -oP '(?<=back-end:)[^ ]+' deployment.yaml)
+                        echo $imageTag
+                        sed -i "s/${AWS_ECR_REPO_NAME}:${imageTag}/${AWS_ECR_REPO_NAME}:${BUILD_NUMBER}/" deployment.yaml
+                        git add deployment.yaml
+                        # Only commit if there are staged changes
+                        if git diff --cached --quiet; then
+                            echo "No changes to commit"
+                        else
+                            git commit -m "Update deployment Image to version ${BUILD_NUMBER}"
+                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                        fi
+                    '''
                 }
             }
         }
