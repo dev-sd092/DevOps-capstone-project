@@ -11,10 +11,19 @@ pipeline {
         AWS_DEFAULT_REGION = 'ap-south-1'
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/"
     }
+    triggers {
+        githubPush() // still triggered by webhook, but filtered below
+    }
+    options {
+        skipDefaultCheckout(true)
+    }
     stages {
         stage('Run only if backend changed') {
       		when {
-        		changeset "backend/**"
+        		anyOf {
+                    changeset "backend/**"
+                    changeset "Jenkins-Pipeline-Code/Jenkinsfile-Backend"
+                }
       		}	
       		steps {
         		echo "Backend files changed — running backend pipeline"
@@ -26,6 +35,12 @@ pipeline {
             }
         }
         stage('Checkout from Git') {
+            when {
+        		anyOf {
+                    changeset "backend/**"
+                    changeset "Jenkins-Pipeline-Code/Jenkinsfile-Backend"
+                }
+      		}	
             steps {
                 git branch: 'main', credentialsId: 'GITHUB', url: 'https://github.com/dev-sd092/DevOps-capstone-project.git'
             }
